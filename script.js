@@ -163,6 +163,13 @@ function showMemoryActions() {
     }
 }
 
+function resetMemoryRun() {
+    clearMemoryTimers();
+    memoryBalloonIndex = 0;
+    memoryCycleVersion += 1;
+    hideMemoryActions();
+}
+
 async function initializePrimaryAudioProcessing() {
     if (usingEnhancedPrimaryAudio || !backgroundMusic) {
         return;
@@ -220,7 +227,9 @@ if (memoriesBackBtn) {
     memoriesBackBtn.addEventListener('click', () => showScreen(birthdayScreen));
 }
 if (memoriesRepeatBtn) {
-    memoriesRepeatBtn.addEventListener('click', openMemoriesPage);
+    memoriesRepeatBtn.addEventListener('click', () => {
+        openMemoriesPage();
+    });
 }
 if (memoriesCelebrateBtn) {
     memoriesCelebrateBtn.addEventListener('click', showCelebratePage);
@@ -475,13 +484,11 @@ function showBirthday() {
 
 function openMemoriesPage() {
     showScreen(memoriesScreen);
-    clearMemoryTimers();
+    resetMemoryRun();
     if (memoriesBalloons) {
         memoriesBalloons.innerHTML = '';
     }
 
-    hideMemoryActions();
-    memoryBalloonIndex = 0;
     buildMemoryBalloons();
 
     if (memoriesPhotoFrame) {
@@ -510,8 +517,7 @@ function openMemoriesPage() {
 }
 
 function showCelebratePage() {
-    showScreen(celebrateScreen);
-    playConfetti();
+    window.location.href = 'celebrate.html';
 }
 
 function restart() {

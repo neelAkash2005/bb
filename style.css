@@ -1371,13 +1371,19 @@ body {
 }
 
 .memories-actions {
+    position: absolute;
+    left: 50%;
+    bottom: 5.25rem;
+    transform: translateX(-50%);
     display: flex;
     gap: 1rem;
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
     width: min(100%, 420px);
+    max-width: calc(100% - 2rem);
     margin-bottom: 0.8rem;
+    z-index: 30;
 }
 
 .memories-actions.is-hidden {
