@@ -63,6 +63,7 @@ let usingEnhancedPrimaryAudio = false;
 const mainScreen = document.getElementById('mainScreen');
 const friendScreen = document.getElementById('friendScreen');
 const birthdayScreen = document.getElementById('birthdayScreen');
+const memoriesScreen = document.getElementById('memoriesScreen');
 const tellMeBtn = document.getElementById('tellMeBtn');
 const maybeBtn = document.getElementById('maybeBtn');
 const friendYesBtn = document.getElementById('friendYesBtn');
@@ -74,6 +75,18 @@ const friendEscapeMessage = document.getElementById('friendEscapeMessage');
 const birthdayMessage = document.getElementById('birthdayMessage');
 const birthdayMessageWrapper = document.querySelector('.birthday-message-wrapper');
 const birthdayScrollHint = document.querySelector('.birthday-scroll-hint');
+const memoriesFooter = document.querySelector('.memories-footer');
+const memoriesActions = document.getElementById('memoriesActions');
+const memoriesRepeatBtn = document.getElementById('memoriesRepeatBtn');
+const memoriesCelebrateBtn = document.getElementById('memoriesCelebrateBtn');
+const memoriesBalloons = document.getElementById('memoriesBalloons');
+const memoriesPhoto = document.getElementById('memoriesPhoto');
+const memoriesVideo = document.getElementById('memoriesVideo');
+const memoriesPhotoCaption = document.getElementById('memoriesPhotoCaption');
+const memoriesPhotoFrame = document.getElementById('memoriesPhotoFrame');
+const memoriesBackBtn = document.getElementById('memoriesBackBtn');
+const celebrateScreen = document.getElementById('celebrateScreen');
+const celebrateBackBtn = document.getElementById('celebrateBackBtn');
 const escapeMessage = document.getElementById('escapeMessage');
 const musicBtn = document.getElementById('musicBtn');
 const backgroundMusic = document.getElementById('backgroundMusic');
@@ -81,6 +94,74 @@ const backgroundMusicSoft = document.getElementById('backgroundMusicSoft');
 const confettiCanvas = document.getElementById('confetti');
 const friendConfettiCanvas = document.getElementById('friendConfetti');
 const floatingHeartsCanvas = document.getElementById('floatingHearts');
+
+function createMemoryImage(label, startColor, endColor) {
+    const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 900" width="720" height="900">
+            <defs>
+                <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="${startColor}"/>
+                    <stop offset="100%" stop-color="${endColor}"/>
+                </linearGradient>
+                <radialGradient id="glow" cx="50%" cy="22%" r="72%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.92"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+            <rect width="720" height="900" rx="42" fill="url(#bg)"/>
+            <rect width="720" height="900" rx="42" fill="url(#glow)"/>
+            <circle cx="180" cy="190" r="86" fill="rgba(255,255,255,0.28)"/>
+            <circle cx="558" cy="250" r="118" fill="rgba(255,255,255,0.18)"/>
+            <path d="M136 694c72-82 162-122 240-122s164 40 208 104v88H136z" fill="rgba(255,255,255,0.18)"/>
+            <text x="50%" y="52%" text-anchor="middle" fill="#7f1d4f" font-size="64" font-family="Segoe UI, Arial, sans-serif" font-weight="700">${label}</text>
+            <text x="50%" y="60%" text-anchor="middle" fill="#8d2c55" font-size="30" font-family="Segoe UI, Arial, sans-serif">A sweet little memory</text>
+            <text x="50%" y="82%" text-anchor="middle" fill="rgba(141,44,85,0.8)" font-size="26" font-family="Segoe UI, Arial, sans-serif">Tap another balloon for the next one</text>
+        </svg>`;
+
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+const memoryPhotos = [
+    { label: 'Memory 1', caption: 'Memory 1', image: '11.jpeg', type: 'image' },
+    { label: 'Memory 2', caption: 'Memory 2', image: '22.jpeg', type: 'image' },
+    { label: 'Memory 3', caption: 'Memory 3', image: '33.jpeg', type: 'image' },
+    { label: 'Memory 4', caption: 'Memory 4', image: '44.jpeg', type: 'image' },
+    { label: 'Memory 5', caption: 'Memory 5', image: '55.jpeg', type: 'image' },
+    { label: 'Memory 6', caption: 'Memory 6', image: '66.jpeg', type: 'image' },
+    { label: 'Memory 7', caption: 'Memory 7', image: '77.jpeg', type: 'image' },
+    { label: 'Memory 8', caption: 'Memory 8', image: '88.jpeg', type: 'image' },
+    { label: 'Memory 9', caption: 'Memory 9', image: '99.jpeg', type: 'image' }
+];
+
+let memoryBalloonIndex = 0;
+let memoryBalloonTimer = null;
+let memorySpawnDelayTimer = null;
+let memoryCycleVersion = 0;
+
+function clearMemoryTimers() {
+    clearTimeout(memoryBalloonTimer);
+    clearTimeout(memorySpawnDelayTimer);
+}
+
+function hideMemoryActions() {
+    if (memoriesActions) {
+        memoriesActions.classList.add('is-hidden');
+    }
+
+    if (memoriesFooter) {
+        memoriesFooter.textContent = 'Tap the balloons.';
+    }
+}
+
+function showMemoryActions() {
+    if (memoriesFooter) {
+        memoriesFooter.textContent = 'All 9 memories completed!';
+    }
+
+    if (memoriesActions) {
+        memoriesActions.classList.remove('is-hidden');
+    }
+}
 
 async function initializePrimaryAudioProcessing() {
     if (usingEnhancedPrimaryAudio || !backgroundMusic) {
@@ -134,7 +215,19 @@ window.addEventListener('resize', resizeCanvases);
 tellMeBtn.addEventListener('click', showMessage);
 friendYesBtn.addEventListener('click', showBirthday);
 friendNoBtn.addEventListener('click', moveFriendNoButton);
-restartBtn.addEventListener('click', restart);
+restartBtn.addEventListener('click', openMemoriesPage);
+if (memoriesBackBtn) {
+    memoriesBackBtn.addEventListener('click', () => showScreen(birthdayScreen));
+}
+if (memoriesRepeatBtn) {
+    memoriesRepeatBtn.addEventListener('click', openMemoriesPage);
+}
+if (memoriesCelebrateBtn) {
+    memoriesCelebrateBtn.addEventListener('click', showCelebratePage);
+}
+if (celebrateBackBtn) {
+    celebrateBackBtn.addEventListener('click', () => showScreen(memoriesScreen));
+}
 musicBtn.addEventListener('click', toggleMusic);
 
 // "Maybe later" button shows cat popup for now
@@ -165,7 +258,176 @@ function showScreen(screen) {
     mainScreen.classList.remove('active');
     friendScreen.classList.remove('active');
     birthdayScreen.classList.remove('active');
+    if (memoriesScreen) {
+        memoriesScreen.classList.remove('active');
+    }
+    if (celebrateScreen) {
+        celebrateScreen.classList.remove('active');
+    }
     screen.classList.add('active');
+}
+
+function showMemoryPhoto(index) {
+    if (!memoriesPhotoCaption || !memoriesPhotoFrame) {
+        return;
+    }
+
+    const photo = memoryPhotos[index % memoryPhotos.length];
+
+    if (photo.type === 'video' && memoriesVideo) {
+        if (memoriesPhoto) {
+            memoriesPhoto.removeAttribute('src');
+            memoriesPhoto.classList.remove('is-active');
+            memoriesPhoto.style.opacity = '0';
+            memoriesPhoto.style.display = 'none';
+        }
+
+        memoriesVideo.pause();
+        memoriesPhotoFrame.classList.add('video-mode');
+        memoriesVideo.playsInline = true;
+        memoriesVideo.muted = true;
+        memoriesVideo.loop = true;
+        memoriesVideo.style.display = 'block';
+        memoriesVideo.style.opacity = '1';
+        memoriesVideo.setAttribute('controls', 'controls');
+        memoriesVideo.classList.add('is-active');
+
+        const startVideo = () => {
+            try {
+                memoriesVideo.currentTime = 0;
+            } catch (error) {
+                // Ignore seek failures before metadata is ready.
+            }
+
+            const playPromise = memoriesVideo.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+                playPromise.catch(() => {});
+            }
+        };
+
+        startVideo();
+
+        if (memoriesVideo.readyState >= 2) {
+            startVideo();
+        } else {
+            memoriesVideo.addEventListener('loadeddata', startVideo, { once: true });
+            memoriesVideo.addEventListener('canplay', startVideo, { once: true });
+            memoriesVideo.load();
+        }
+    } else if (memoriesPhoto) {
+        if (memoriesVideo) {
+            memoriesVideo.pause();
+            memoriesVideo.classList.remove('is-active');
+            memoriesVideo.style.opacity = '0';
+            memoriesVideo.style.display = 'none';
+        }
+
+        memoriesPhotoFrame.classList.remove('video-mode');
+        memoriesPhoto.alt = photo.caption;
+        memoriesPhoto.src = photo.image;
+        memoriesPhoto.style.display = 'block';
+        memoriesPhoto.style.opacity = '1';
+        memoriesPhoto.classList.add('is-active');
+    }
+
+    memoriesPhotoCaption.textContent = photo.caption;
+    memoriesPhotoFrame.classList.add('has-photo');
+}
+
+function buildMemoryBalloons() {
+    if (!memoriesBalloons) {
+        return;
+    }
+
+    clearMemoryTimers();
+    memoriesBalloons.innerHTML = '';
+
+    const cycleVersion = ++memoryCycleVersion;
+    memoryBalloonIndex = 0;
+    hideMemoryActions();
+
+    const spawnBalloon = (index) => {
+        if (cycleVersion !== memoryCycleVersion) {
+            return;
+        }
+
+        if (index >= memoryPhotos.length) {
+            showMemoryActions();
+            return;
+        }
+
+        const photo = memoryPhotos[index];
+        const side = index % 2 === 0 ? 'left' : 'right';
+        setTimeout(() => {
+            if (cycleVersion !== memoryCycleVersion) {
+                return;
+            }
+
+            const balloon = document.createElement('button');
+            balloon.type = 'button';
+            balloon.className = 'memory-balloon';
+            balloon.setAttribute('aria-label', `Show ${photo.label}`);
+            const sideOffset = 3 + Math.random() * 4;
+            if (side === 'left') {
+                balloon.style.left = `${sideOffset}vw`;
+            } else {
+                balloon.style.right = `${sideOffset}vw`;
+            }
+            balloon.style.setProperty('--balloon-drift', `${side === 'left' ? 34 + Math.random() * 18 : -(34 + Math.random() * 18)}px`);
+            balloon.style.animationDuration = `${9 + Math.random() * 2.5}s, ${2.8 + Math.random() * 0.6}s`;
+            balloon.style.animationDelay = `0s, ${Math.random() * 1.5}s`;
+            balloon.addEventListener('click', () => {
+                if (cycleVersion !== memoryCycleVersion) {
+                    return;
+                }
+
+                showMemoryPhoto(index);
+                balloon.classList.add('revealed');
+                clearMemoryTimers();
+                memoryBalloonTimer = setTimeout(() => {
+                    if (cycleVersion !== memoryCycleVersion) {
+                        return;
+                    }
+
+                    balloon.classList.add('bursting');
+                    setTimeout(() => {
+                        balloon.remove();
+                        if (cycleVersion !== memoryCycleVersion) {
+                            return;
+                        }
+
+                        const nextIndex = index + 1;
+                        if (nextIndex >= memoryPhotos.length) {
+                            showMemoryActions();
+                            return;
+                        }
+
+                        memoryBalloonIndex = nextIndex;
+                        memorySpawnDelayTimer = setTimeout(() => spawnBalloon(nextIndex), 140);
+                    }, 320);
+                }, 240);
+            });
+
+            memoriesBalloons.appendChild(balloon);
+            memoryBalloonTimer = setTimeout(() => {
+                if (cycleVersion !== memoryCycleVersion) {
+                    return;
+                }
+
+                balloon.classList.add('bursting');
+                setTimeout(() => {
+                    balloon.remove();
+                    if (cycleVersion !== memoryCycleVersion) {
+                        return;
+                    }
+
+                    memorySpawnDelayTimer = setTimeout(() => spawnBalloon(index), 260);
+                }, 320);
+            }, 11000);
+        }, 0);
+    };
+
+    spawnBalloon(0);
 }
 
 function updateBirthdayScrollHint() {
@@ -208,6 +470,47 @@ function showBirthday() {
         birthdayMessageWrapper.scrollTop = 0;
     }
     updateBirthdayScrollHint();
+    playConfetti();
+}
+
+function openMemoriesPage() {
+    showScreen(memoriesScreen);
+    clearMemoryTimers();
+    if (memoriesBalloons) {
+        memoriesBalloons.innerHTML = '';
+    }
+
+    hideMemoryActions();
+    memoryBalloonIndex = 0;
+    buildMemoryBalloons();
+
+    if (memoriesPhotoFrame) {
+        memoriesPhotoFrame.classList.remove('has-photo');
+        memoriesPhotoFrame.classList.remove('video-mode');
+    }
+
+    if (memoriesPhoto) {
+        memoriesPhoto.removeAttribute('src');
+        memoriesPhoto.alt = 'Selected memory';
+        memoriesPhoto.classList.remove('is-active');
+        memoriesPhoto.style.opacity = '0';
+        memoriesPhoto.style.display = 'none';
+    }
+
+    if (memoriesVideo) {
+        memoriesVideo.pause();
+        memoriesVideo.classList.remove('is-active');
+        memoriesVideo.style.opacity = '0';
+        memoriesVideo.style.display = 'none';
+    }
+
+    if (memoriesPhotoCaption) {
+        memoriesPhotoCaption.textContent = 'Tap a balloon to reveal a photo';
+    }
+}
+
+function showCelebratePage() {
+    showScreen(celebrateScreen);
     playConfetti();
 }
 
