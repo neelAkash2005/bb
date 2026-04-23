@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Surprise For You 💫</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-container">
+        <div class="floating-element heart" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-element star" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="floating-element bubble" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="floating-element heart" style="left: 40%; animation-delay: 0.5s;"></div>
+        <div class="floating-element star" style="left: 50%; animation-delay: 1.5s;"></div>
+        <div class="floating-element bubble" style="left: 60%; animation-delay: 2.5s;"></div>
+        <div class="floating-element heart" style="left: 70%; animation-delay: 0.8s;"></div>
+        <div class="floating-element star" style="left: 80%; animation-delay: 1.8s;"></div>
+        <div class="floating-element bubble" style="left: 90%; animation-delay: 2.2s;"></div>
+    </div>
+
+    <!-- Main Screen -->
+    <div class="screen active" id="mainScreen">
+        <!-- Glitter Rain (Home Screen Only) -->
+        <div class="glitter-rain" aria-hidden="true">
+            <span class="glitter star" style="left: 3%; animation-delay: 0s; animation-duration: 7.2s;"></span>
+            <span class="glitter heart" style="left: 8%; animation-delay: 1.1s; animation-duration: 8.4s;"></span>
+            <span class="glitter star" style="left: 13%; animation-delay: 2.1s; animation-duration: 6.9s;"></span>
+            <span class="glitter heart" style="left: 18%; animation-delay: 0.4s; animation-duration: 9.1s;"></span>
+            <span class="glitter star" style="left: 23%; animation-delay: 1.6s; animation-duration: 7.7s;"></span>
+            <span class="glitter heart" style="left: 28%; animation-delay: 2.8s; animation-duration: 8.8s;"></span>
+            <span class="glitter star" style="left: 34%; animation-delay: 0.7s; animation-duration: 7.4s;"></span>
+            <span class="glitter heart" style="left: 39%; animation-delay: 1.9s; animation-duration: 8.2s;"></span>
+            <span class="glitter star" style="left: 44%; animation-delay: 2.5s; animation-duration: 7.1s;"></span>
+            <span class="glitter heart" style="left: 49%; animation-delay: 0.3s; animation-duration: 9.4s;"></span>
+            <span class="glitter star" style="left: 54%; animation-delay: 1.3s; animation-duration: 8.1s;"></span>
+            <span class="glitter heart" style="left: 59%; animation-delay: 2.3s; animation-duration: 7.6s;"></span>
+            <span class="glitter star" style="left: 64%; animation-delay: 0.9s; animation-duration: 9.2s;"></span>
+            <span class="glitter heart" style="left: 69%; animation-delay: 1.7s; animation-duration: 7.8s;"></span>
+            <span class="glitter star" style="left: 74%; animation-delay: 2.6s; animation-duration: 8.6s;"></span>
+            <span class="glitter heart" style="left: 79%; animation-delay: 0.2s; animation-duration: 7.3s;"></span>
+            <span class="glitter star" style="left: 84%; animation-delay: 1.4s; animation-duration: 8.9s;"></span>
+            <span class="glitter heart" style="left: 89%; animation-delay: 2.7s; animation-duration: 7.5s;"></span>
+            <span class="glitter star" style="left: 94%; animation-delay: 0.6s; animation-duration: 8.3s;"></span>
+            <span class="glitter heart" style="left: 98%; animation-delay: 1.8s; animation-duration: 7.0s;"></span>
+        </div>
+        <div class="content">
+            <h1 class="heading">READY FOR A SMALL SURPRISE ?</h1>
+            
+            <!-- Animated Character -->
+            <div class="character-container">
+                <div class="bunny-back-heart" aria-hidden="true">❤</div>
+                <div class="character bunny">
+                    <div class="bunny-head">
+                        <div class="bunny-ear left"></div>
+                        <div class="bunny-ear right"></div>
+                        <div class="bunny-face">
+                            <div class="bunny-eye left"></div>
+                            <div class="bunny-eye right"></div>
+                            <div class="bunny-nose"></div>
+                            <div class="bunny-mouth"></div>
+                        </div>
+                    </div>
+                    <div class="bunny-body"></div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-container">
+                <button class="btn btn-primary" id="tellMeBtn">YES</button>
+                <button class="btn btn-secondary" id="maybeBtn">NO</button>
+            </div>
+
+            <!-- Attempt counter message -->
+            <p class="escape-message" id="escapeMessage" style="display: none;">Don't run away 😄 just click the other one!</p>
+        </div>
+    </div>
+
+    <!-- No Button Cat Popup -->
+    <div class="cat-overlay" id="catOverlay" aria-hidden="true">
+        <div class="cat-popup" role="dialog" aria-modal="true" aria-labelledby="catPopupTitle">
+            <div class="cat-clip">
+                <div class="cat-emoji">😼</div>
+                <div class="gun-emoji">🔫</div>
+            </div>
+            <h2 id="catPopupTitle">go for yes</h2>
+            <p>the cat says the answer is yes</p>
+            <button class="btn btn-primary cat-close-btn" id="catCloseBtn">Okay</button>
+        </div>
+    </div>
+
+    <!-- Friendship Screen -->
+    <div class="screen" id="friendScreen">
+        <canvas id="friendConfetti"></canvas>
+        <div class="content friend-content">
+            <h1 class="friend-heading">Will you be my friend for ever ?</h1>
+
+            <div class="character-container">
+                <div class="bunny-back-heart" aria-hidden="true">❤</div>
+                <div class="character panda">
+                    <div class="panda-head">
+                        <div class="panda-ear left"></div>
+                        <div class="panda-ear right"></div>
+                        <div class="panda-eye-patch left"></div>
+                        <div class="panda-eye-patch right"></div>
+                        <div class="panda-eye left"></div>
+                        <div class="panda-eye right"></div>
+                        <div class="panda-nose"></div>
+                        <div class="panda-mouth"></div>
+                    </div>
+                    <div class="panda-body"></div>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button class="btn btn-primary" id="friendYesBtn">YES</button>
+                <button class="btn btn-secondary" id="friendNoBtn">NO</button>
+            </div>
+
+            <p class="escape-message" id="friendEscapeMessage" style="display: none;">Don't run away 😄 just click the other one!</p>
+        </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti"></canvas>
+
+    <!-- Floating Hearts Canvas -->
+    <canvas id="floatingHearts"></canvas>
+
+    <!-- Birthday Screen -->
+    <div class="screen" id="birthdayScreen">
+        <div class="birthday-content">
+            <h1 class="birthday-heading">Happy Birthday ❤️</h1>
+            <div class="birthday-message-wrapper">
+                <p class="birthday-message" id="birthdayMessage"></p>
+            </div>
+            <div class="confetti-burst"></div>
+            <button class="btn btn-primary" id="restartBtn">Start Over</button>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control">
+        <button id="musicBtn" class="music-btn" title="Toggle Music">🔊</button>
+    </div>
+
+    <!-- Hidden Audio - Layered Birthday Music -->
+    <audio id="backgroundMusic" loop preload="auto" src="file:///C:/Users/Akash/Downloads/WhatsApp%20Audio%202026-04-23%20at%2012.33.12%20PM.mp3"></audio>
+    <audio id="backgroundMusicSoft" loop preload="auto" src="file:///C:/Users/Akash/Desktop/b-tune.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
