@@ -172,36 +172,7 @@ function resetMemoryRun() {
 }
 
 async function initializePrimaryAudioProcessing() {
-    if (usingEnhancedPrimaryAudio || !backgroundMusic) {
-        return;
-    }
-
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) {
-        return;
-    }
-
-    try {
-        audioContext = new AudioCtx();
-        primarySourceNode = audioContext.createMediaElementSource(backgroundMusic);
-
-        primaryGainNode = audioContext.createGain();
-        primaryGainNode.gain.value = PRIMARY_TRACK_GAIN_BOOST;
-
-        primaryTrebleNode = audioContext.createBiquadFilter();
-        primaryTrebleNode.type = 'highshelf';
-        primaryTrebleNode.frequency.value = 3200;
-        primaryTrebleNode.gain.value = PRIMARY_TRACK_TREBLE_BOOST_DB;
-
-        primarySourceNode.connect(primaryTrebleNode);
-        primaryTrebleNode.connect(primaryGainNode);
-        primaryGainNode.connect(audioContext.destination);
-
-        usingEnhancedPrimaryAudio = true;
-    } catch (error) {
-        usingEnhancedPrimaryAudio = false;
-        console.log('Primary audio enhancement unavailable:', error);
-    }
+    return;
 }
 
 async function startMainMusicPlayback() {
@@ -209,14 +180,16 @@ async function startMainMusicPlayback() {
         return false;
     }
 
+    backgroundMusic.loop = true;
     backgroundMusic.volume = PRIMARY_TRACK_VOLUME;
 
     await initializePrimaryAudioProcessing();
-    if (audioContext && audioContext.state === 'suspended') {
-        await audioContext.resume();
+    await backgroundMusic.play();
+
+    if (backgroundMusicSoft) {
+        backgroundMusicSoft.pause();
     }
 
-    await backgroundMusic.play();
     musicBtn.textContent = '🔊';
     musicBtn.classList.remove('muted');
     musicPlaying = true;
