@@ -801,6 +801,8 @@ body {
     animation: slideInDown 0.8s ease-out;
     width: min(92vw, 920px);
     padding: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
 }
 
 .birthday-heading {
@@ -826,25 +828,64 @@ body {
 }
 
 .birthday-message-wrapper {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 242, 248, 0.98) 100%);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border-radius: 24px;
     margin: 2rem auto;
-    max-width: 500px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: min(100%, 640px);
+    max-height: min(62vh, 520px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid rgba(255, 141, 195, 0.22);
+    box-shadow: 0 18px 45px rgba(164, 56, 95, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.65) inset;
+    position: relative;
     animation: fadeInBounce 1.2s ease-out;
 }
 
+.birthday-message-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 35%);
+    pointer-events: none;
+}
+
 .birthday-message {
-    font-size: 1.2rem;
-    color: #333;
-    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+    font-size: clamp(1.05rem, 2.8vw, 1.25rem);
+    color: #4a3356;
+    line-height: 1.95;
+    letter-spacing: 0.2px;
     word-break: break-word;
+    white-space: pre-wrap;
+    text-align: left;
+}
+
+.birthday-message strong {
+    color: #d91c79;
 }
 
 .birthday-message-wrapper,
 .message-wrapper {
-    width: min(100%, 560px);
+    width: min(100%, 640px);
+}
+
+.birthday-message-wrapper::-webkit-scrollbar,
+.birthday-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.birthday-message-wrapper::-webkit-scrollbar-track,
+.birthday-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+}
+
+.birthday-message-wrapper::-webkit-scrollbar-thumb,
+.birthday-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(255, 95, 147, 0.55), rgba(108, 167, 239, 0.55));
+    border-radius: 999px;
 }
 
 .confetti-burst {
@@ -976,6 +1017,16 @@ body {
         font-size: clamp(2rem, 7vw, 2.6rem);
     }
 
+    .birthday-message-wrapper {
+        margin: 1.5rem auto;
+        border-radius: 20px;
+        max-height: min(66vh, 500px);
+    }
+
+    .birthday-message {
+        line-height: 1.9;
+    }
+
     .typewriter-heading {
         font-size: 1.2rem;
     }
@@ -1008,6 +1059,17 @@ body {
 
     .birthday-heading {
         font-size: clamp(1.8rem, 8vw, 2rem);
+    }
+
+    .birthday-message-wrapper {
+        padding: 1.2rem;
+        margin: 1.25rem auto;
+        max-height: min(68vh, 480px);
+    }
+
+    .birthday-message {
+        font-size: 1rem;
+        line-height: 1.85;
     }
 
     .btn {

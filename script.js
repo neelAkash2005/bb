@@ -11,17 +11,35 @@ and warmth to your heart.
 
 You deserve all the happiness in the world!`,
 
-    birthdayMessage: `Today is your special day! 🎂✨
+    birthdayMessage: `✨ Today is your day… a little universe of your own ✨
 
-Thank you for being the wonderful person you are.
-Your kindness, warmth, and beautiful spirit
-light up everyone's life around you.
+You came into my life like a quiet surprise,
+unexpected… yet unbelievably beautiful. 💫
 
-I'm so grateful to celebrate you today.
-May all your dreams come true!
+And somehow, you stayed—
+in the small moments, in the silence, in the storms—
+even when I couldn’t always stay the same for you. 🤍
 
-Wishing you a year filled with love, 
-laughter, and endless adventures together. 💕`
+You’ve been my quiet strength,
+the smile behind my hardest days,
+the warmth that never asked for anything in return. 🌸
+
+You lifted me without making it loud,
+loved me without making it heavy,
+and raised my world to something softer, kinder, better. ✨
+
+Today, I hope happiness finds you
+in the gentlest ways possible—
+like sunlight through a window,
+like a song you didn’t know you needed. 🎶
+
+May life give you endless reasons to smile,
+and may you always remain
+as strong, as independent, as caring,
+and as beautifully you… 🌷
+
+Happy Birthday 🎂
+Take all my love, always… ❤️✨`
 };
 
 // Game State
