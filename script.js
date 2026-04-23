@@ -72,6 +72,8 @@ const catOverlay = document.getElementById('catOverlay');
 const catCloseBtn = document.getElementById('catCloseBtn');
 const friendEscapeMessage = document.getElementById('friendEscapeMessage');
 const birthdayMessage = document.getElementById('birthdayMessage');
+const birthdayMessageWrapper = document.querySelector('.birthday-message-wrapper');
+const birthdayScrollHint = document.querySelector('.birthday-scroll-hint');
 const escapeMessage = document.getElementById('escapeMessage');
 const musicBtn = document.getElementById('musicBtn');
 const backgroundMusic = document.getElementById('backgroundMusic');
@@ -166,6 +168,21 @@ function showScreen(screen) {
     screen.classList.add('active');
 }
 
+function updateBirthdayScrollHint() {
+    if (!birthdayMessageWrapper || !birthdayScrollHint) {
+        return;
+    }
+
+    const needsScroll = birthdayMessageWrapper.scrollHeight > birthdayMessageWrapper.clientHeight + 1;
+    const reachedBottom = birthdayMessageWrapper.scrollTop + birthdayMessageWrapper.clientHeight >= birthdayMessageWrapper.scrollHeight - 8;
+
+    if (!needsScroll || reachedBottom) {
+        birthdayScrollHint.classList.add('is-hidden');
+    } else {
+        birthdayScrollHint.classList.remove('is-hidden');
+    }
+}
+
 function showMessage() {
     friendNoAttempts = 0;
     friendEscapeMessage.style.display = 'none';
@@ -187,6 +204,10 @@ function backToMain() {
 function showBirthday() {
     showScreen(birthdayScreen);
     birthdayMessage.textContent = config.birthdayMessage;
+    if (birthdayMessageWrapper) {
+        birthdayMessageWrapper.scrollTop = 0;
+    }
+    updateBirthdayScrollHint();
     playConfetti();
 }
 
@@ -199,6 +220,12 @@ function restart() {
     friendNoBtn.style.left = '0';
     friendNoBtn.style.top = '0';
     birthdayMessage.textContent = '';
+    if (birthdayMessageWrapper) {
+        birthdayMessageWrapper.scrollTop = 0;
+    }
+    if (birthdayScrollHint) {
+        birthdayScrollHint.classList.remove('is-hidden');
+    }
     closeCatPopup();
     showScreen(mainScreen);
 }
@@ -484,11 +511,25 @@ window.addEventListener('load', () => {
     initializePrimaryAudioProcessing();
 });
 
+if (birthdayMessageWrapper) {
+    birthdayMessageWrapper.addEventListener('scroll', updateBirthdayScrollHint);
+}
+
+window.addEventListener('resize', updateBirthdayScrollHint);
+
+function isInsideBirthdayScrollArea(target) {
+    return Boolean(target && (target.closest('.birthday-content') || target.closest('.birthday-message-wrapper')));
+}
+
 // ===== Prevent Scrolling (for better UX) =====
 document.addEventListener('wheel', (e) => {
-    e.preventDefault();
+    if (!isInsideBirthdayScrollArea(e.target)) {
+        e.preventDefault();
+    }
 }, { passive: false });
 
 document.addEventListener('touchmove', (e) => {
-    e.preventDefault();
+    if (!isInsideBirthdayScrollArea(e.target)) {
+        e.preventDefault();
+    }
 }, { passive: false });
