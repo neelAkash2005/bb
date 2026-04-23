@@ -61,6 +61,13 @@ body {
     animation-duration: 13s;
 }
 
+.floating-element.heart,
+.floating-element.star,
+.glitter.heart,
+.glitter.star {
+    animation-delay: 0s !important;
+}
+
 .floating-element.bubble {
     animation-duration: 15s;
 }

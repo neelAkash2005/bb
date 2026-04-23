@@ -626,6 +626,8 @@
         </div>
     </div>
 
+    <audio id="finalTuneAudio" preload="auto" src="final-tune.mp3"></audio>
+
     <script>
         window.addEventListener('load', () => {
             const celebrateCard = document.querySelector('.celebrate-card');
@@ -633,8 +635,36 @@
             const candleMessage = document.getElementById('candleMessage');
             const finalWish = document.getElementById('finalWish');
             const candle = cakeStage ? cakeStage.querySelector('.candle') : null;
+            const finalTuneAudio = document.getElementById('finalTuneAudio');
+
+            const startFinalTune = () => {
+                if (!finalTuneAudio) {
+                    return;
+                }
+
+                finalTuneAudio.volume = 1;
+                finalTuneAudio.playbackRate = 1.03;
+                finalTuneAudio.currentTime = 0;
+                finalTuneAudio.play().catch(() => {});
+            };
+
             if (cakeStage) {
                 setTimeout(() => cakeStage.classList.add('show'), 120);
+            }
+
+            startFinalTune();
+
+            if (finalTuneAudio) {
+                const resumeFinalTune = () => {
+                    startFinalTune();
+                    window.removeEventListener('pointerdown', resumeFinalTune);
+                    window.removeEventListener('keydown', resumeFinalTune);
+                    window.removeEventListener('touchstart', resumeFinalTune);
+                };
+
+                window.addEventListener('pointerdown', resumeFinalTune, { once: true });
+                window.addEventListener('keydown', resumeFinalTune, { once: true });
+                window.addEventListener('touchstart', resumeFinalTune, { once: true });
             }
 
             setTimeout(() => {
