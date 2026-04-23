@@ -793,6 +793,221 @@ body {
 /* Birthday Screen */
 #birthdayScreen {
     background: radial-gradient(circle at top, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0) 36%), linear-gradient(135deg, #fff0f7 0%, #f6dcff 48%, #def2ff 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.birthday-party-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 12;
+    overflow: hidden;
+}
+
+.birthday-bubble {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    font-size: clamp(1.25rem, 2.8vw, 2rem);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 14px rgba(255, 198, 232, 0.6));
+    animation: bubbleDrift 4.5s ease-in-out infinite;
+}
+
+.bubble-one {
+    left: 18%;
+    top: 25%;
+    animation-delay: 0s;
+}
+
+.bubble-two {
+    right: 18%;
+    top: 28%;
+    animation-delay: 0.7s;
+}
+
+.bubble-three {
+    left: 24%;
+    bottom: 22%;
+    animation-delay: 1.2s;
+}
+
+.bubble-four {
+    right: 24%;
+    bottom: 20%;
+    animation-delay: 1.8s;
+}
+
+.birthday-party-item {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(3rem, 6vw, 4.2rem);
+    height: clamp(3rem, 6vw, 4.2rem);
+    font-size: clamp(2rem, 4.6vw, 3rem);
+    filter: drop-shadow(0 10px 16px rgba(164, 56, 95, 0.16));
+    animation: partyBounce 2.8s ease-in-out infinite;
+    --party-base-transform: translateY(0);
+    --party-rotate: 0deg;
+    transform: var(--party-base-transform) rotate(var(--party-rotate));
+}
+
+.birthday-party-item.falling-popper {
+    top: -12vh;
+    font-size: clamp(1.5rem, 3.8vw, 2.4rem);
+    opacity: 0;
+    animation: popperRain 9s linear infinite;
+}
+
+.rain-one { left: 4%; animation-delay: 0s; }
+.rain-two { left: 13%; animation-delay: 1.1s; }
+.rain-three { left: 23%; animation-delay: 2.2s; }
+.rain-four { left: 37%; animation-delay: 0.9s; }
+.rain-five { left: 49%; animation-delay: 2.8s; }
+.rain-six { left: 61%; animation-delay: 1.6s; }
+.rain-seven { left: 74%; animation-delay: 0.4s; }
+.rain-eight { left: 88%; animation-delay: 2.0s; }
+
+.birthday-party-item.popper {
+    font-size: clamp(1.85rem, 4.2vw, 2.8rem);
+}
+
+.birthday-party-item.cake {
+    animation-name: cakeGlow;
+    position: absolute;
+    width: clamp(4rem, 7vw, 5rem);
+    height: clamp(4rem, 7vw, 5rem);
+}
+
+.cake-emoji {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(2rem, 4.4vw, 3rem);
+}
+
+.cake-candle {
+    position: absolute;
+    top: -0.55rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-size: 1rem;
+    animation: flameFlicker 1.1s ease-in-out infinite;
+}
+
+.birthday-party-item.top-left {
+    top: 1rem;
+    left: 1rem;
+    --party-rotate: -18deg;
+}
+
+.birthday-party-item.top-right {
+    top: 1rem;
+    right: 1rem;
+    --party-rotate: 18deg;
+    animation-delay: 0.35s;
+}
+
+.birthday-party-item.left-middle {
+    left: 1rem;
+    top: 46%;
+    --party-base-transform: translateY(-50%);
+    --party-rotate: -8deg;
+    animation-delay: 0.15s;
+}
+
+.birthday-party-item.right-middle {
+    right: 1rem;
+    top: 46%;
+    --party-base-transform: translateY(-50%);
+    --party-rotate: 8deg;
+    animation-delay: 0.55s;
+}
+
+.birthday-party-item.bottom-left {
+    left: 1.2rem;
+    bottom: 1rem;
+    --party-rotate: -14deg;
+    animation-delay: 0.25s;
+}
+
+.birthday-party-item.bottom-right {
+    right: 1.2rem;
+    bottom: 1rem;
+    --party-rotate: 14deg;
+    animation-delay: 0.65s;
+}
+
+@keyframes partyBounce {
+    0%,
+    100% {
+        transform: var(--party-base-transform) translateY(0) rotate(var(--party-rotate));
+    }
+    50% {
+        transform: var(--party-base-transform) translateY(-8px) rotate(var(--party-rotate));
+    }
+}
+
+@keyframes cakeGlow {
+    0%,
+    100% {
+        transform: var(--party-base-transform) translateY(0) scale(1);
+        filter: drop-shadow(0 10px 16px rgba(164, 56, 95, 0.16)) drop-shadow(0 0 8px rgba(255, 214, 232, 0.55));
+    }
+    50% {
+        transform: var(--party-base-transform) translateY(-6px) scale(1.03);
+        filter: drop-shadow(0 12px 18px rgba(164, 56, 95, 0.2)) drop-shadow(0 0 14px rgba(255, 214, 232, 0.82));
+    }
+}
+
+@keyframes flameFlicker {
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.92;
+        filter: drop-shadow(0 0 6px rgba(255, 198, 91, 0.78));
+    }
+    50% {
+        transform: translateX(-50%) scale(1.12);
+        opacity: 1;
+        filter: drop-shadow(0 0 10px rgba(255, 198, 91, 0.95));
+    }
+}
+
+@keyframes bubbleDrift {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(8px, -10px) scale(1.05);
+    }
+    50% {
+        transform: translate(-6px, 6px) scale(0.98);
+    }
+    75% {
+        transform: translate(10px, -4px) scale(1.02);
+    }
+}
+
+@keyframes popperRain {
+    0% {
+        transform: translateY(-12vh) translateX(0) rotate(-12deg) scale(0.9);
+        opacity: 0;
+    }
+    8% {
+        opacity: 1;
+    }
+    45% {
+        transform: translateY(44vh) translateX(10px) rotate(10deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(116vh) translateX(-12px) rotate(20deg) scale(0.92);
+        opacity: 0;
+    }
 }
 
 .birthday-content {
@@ -1084,6 +1299,28 @@ body {
         margin-bottom: 0.9rem;
     }
 
+    .birthday-party-item {
+        width: 2.7rem;
+        height: 2.7rem;
+        font-size: 1.8rem;
+    }
+
+    .birthday-party-item.cake {
+        font-size: 2rem;
+    }
+
+    .birthday-party-item.top-left,
+    .birthday-party-item.left-middle,
+    .birthday-party-item.bottom-left {
+        left: 0.5rem;
+    }
+
+    .birthday-party-item.top-right,
+    .birthday-party-item.right-middle,
+    .birthday-party-item.bottom-right {
+        right: 0.5rem;
+    }
+
     .birthday-message {
         line-height: 1.9;
     }
@@ -1131,6 +1368,43 @@ body {
     .birthday-scroll-hint {
         font-size: 0.82rem;
         padding: 0.45rem 0.8rem;
+    }
+
+    .birthday-party-item.top-left,
+    .birthday-party-item.top-right {
+        top: 0.5rem;
+    }
+
+    .birthday-party-item.left-middle,
+    .birthday-party-item.right-middle {
+        top: 40%;
+    }
+
+    .birthday-party-item.bottom-left,
+    .birthday-party-item.bottom-right {
+        bottom: 0.5rem;
+    }
+
+    .birthday-bubble {
+        font-size: 1.35rem;
+    }
+
+    .birthday-party-item.falling-popper {
+        font-size: 1.6rem;
+    }
+
+    .bubble-one,
+    .bubble-three {
+        left: 12%;
+    }
+
+    .bubble-two,
+    .bubble-four {
+        right: 12%;
+    }
+
+    .birthday-party-item.falling-popper {
+        font-size: 1.45rem;
     }
 
     .birthday-message {
