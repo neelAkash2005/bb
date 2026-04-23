@@ -122,15 +122,15 @@ function createMemoryImage(label, startColor, endColor) {
 }
 
 const memoryPhotos = [
-    { label: 'Memory 1', caption: 'Memory 1', image: '11.jpeg', type: 'image' },
-    { label: 'Memory 2', caption: 'Memory 2', image: '22.jpeg', type: 'image' },
-    { label: 'Memory 3', caption: 'Memory 3', image: '33.jpeg', type: 'image' },
-    { label: 'Memory 4', caption: 'Memory 4', image: '44.jpeg', type: 'image' },
-    { label: 'Memory 5', caption: 'Memory 5', image: '55.jpeg', type: 'image' },
-    { label: 'Memory 6', caption: 'Memory 6', image: '66.jpeg', type: 'image' },
-    { label: 'Memory 7', caption: 'Memory 7', image: '77.jpeg', type: 'image' },
-    { label: 'Memory 8', caption: 'Memory 8', image: '88.jpeg', type: 'image' },
-    { label: 'Memory 9', caption: 'Memory 9', image: '99.jpeg', type: 'image' }
+    { label: 'Memory 1', caption: '✨ A smile that lights everything', image: '11.jpeg', type: 'image' },
+    { label: 'Memory 2', caption: '🌸 Soft moments, strong soul', image: '22.jpeg', type: 'image' },
+    { label: 'Memory 3', caption: '💫 Effortlessly beautiful', image: '33.jpeg', type: 'image' },
+    { label: 'Memory 4', caption: '🤍 Where calm meets charm', image: '44.jpeg', type: 'image' },
+    { label: 'Memory 5', caption: '🌷 Grace in every frame', image: '55.jpeg', type: 'image' },
+    { label: 'Memory 6', caption: '🌼 Just being you is enough', image: '66.jpeg', type: 'image' },
+    { label: 'Memory 7', caption: '🎀 A little magic in every glance', image: '77.jpeg', type: 'image' },
+    { label: 'Memory 8', caption: '🌙 Quietly shining, always', image: '88.jpeg', type: 'image' },
+    { label: 'Memory 9', caption: '❤️ My favorite kind of happiness', image: '99.jpeg', type: 'image' }
 ];
 
 let memoryBalloonIndex = 0;

@@ -128,7 +128,7 @@
         .cake-stage {
             position: relative;
             width: min(80vw, 420px);
-            height: min(48vw, 470px);
+            height: min(54vw, 560px);
             display: flex;
             align-items: flex-end;
             justify-content: center;
@@ -250,6 +250,11 @@
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
+        .candle.candle-drop {
+            transform: translateY(46px) scale(0.82);
+            opacity: 0.9;
+        }
+
         .wick {
             position: absolute;
             left: 50%;
@@ -286,6 +291,119 @@
             background: radial-gradient(circle, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.1) 34%, rgba(255,255,255,0) 70%);
             opacity: 0;
             animation: smokeRise 2.5s ease-in-out infinite;
+        }
+
+        .candle-message,
+        .final-wish {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            opacity: 0;
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            text-align: center;
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        .candle-message {
+            bottom: 226px;
+            color: #a82a57;
+            font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-shadow: 0 1px 10px rgba(255,255,255,0.85);
+        }
+
+        .final-wish {
+            top: 58px;
+            bottom: auto;
+            width: min(84%, 28rem);
+            color: #b11d57;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 900;
+            line-height: 1.25;
+            text-shadow: 0 2px 18px rgba(255,255,255,0.92), 0 0 22px rgba(255, 121, 162, 0.24);
+        }
+
+        .burst-rain {
+            position: absolute;
+            left: 50%;
+            bottom: 188px;
+            width: min(88vw, 520px);
+            height: 220px;
+            transform: translateX(-50%);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .burst-piece {
+            position: absolute;
+            left: 50%;
+            bottom: 72px;
+            opacity: 0;
+            font-size: 1.2rem;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.9));
+            transform: translateX(-50%) translateY(0) scale(0.5);
+        }
+
+        .burst-piece.heart::before { content: '❤'; color: rgba(232, 49, 95, 0.92); }
+        .burst-piece.star::before { content: '✦'; color: rgba(255, 246, 183, 0.98); }
+        .burst-piece.spark::before { content: '✨'; color: rgba(255, 255, 255, 0.98); }
+
+        .celebrate-card.show-burst .candle-message,
+        .celebrate-card.show-burst .final-wish,
+        .celebrate-card.show-burst .burst-piece {
+            opacity: 1;
+        }
+
+        .celebrate-card.show-message .candle-message {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .celebrate-card.show-burst .final-wish {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .celebrate-card.show-burst .burst-piece {
+            animation: burstFloat 1.8s ease-out forwards;
+        }
+
+        .b1 { margin-left: -130px; animation-delay: 0.02s; }
+        .b2 { margin-left: -98px; animation-delay: 0.08s; }
+        .b3 { margin-left: -68px; animation-delay: 0.14s; }
+        .b4 { margin-left: -36px; animation-delay: 0.2s; }
+        .b5 { margin-left: -6px; animation-delay: 0.26s; }
+        .b6 { margin-left: 24px; animation-delay: 0.1s; }
+        .b7 { margin-left: 56px; animation-delay: 0.18s; }
+        .b8 { margin-left: 90px; animation-delay: 0.24s; }
+        .b9 { margin-left: 124px; animation-delay: 0.3s; }
+
+        .b1 { bottom: 66px; }
+        .b2 { bottom: 88px; }
+        .b3 { bottom: 56px; }
+        .b4 { bottom: 96px; }
+        .b5 { bottom: 72px; }
+        .b6 { bottom: 84px; }
+        .b7 { bottom: 54px; }
+        .b8 { bottom: 92px; }
+        .b9 { bottom: 64px; }
+
+        .b1, .b3, .b5, .b7, .b9 { font-size: 1rem; }
+        .b2, .b4, .b6, .b8 { font-size: 1.35rem; }
+
+        @keyframes burstFloat {
+            0% {
+                transform: translateX(-50%) translateY(14px) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-50%) translateY(-132px) scale(1.05) rotate(18deg);
+                opacity: 0;
+            }
         }
 
         .sprinkles {
@@ -338,8 +456,41 @@
             animation: flicker 0.85s ease-in-out 2.1s infinite;
         }
 
+        .cake-stage.show .candle.candle-drop {
+            animation: none;
+        }
+
         .back-btn {
             margin-top: 0.4rem;
+        }
+
+        .home-shortcut {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 120;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #9c2451;
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 8px 18px rgba(164, 56, 95, 0.18);
+            backdrop-filter: blur(8px);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .home-shortcut:hover {
+            transform: translateY(-2px) scale(1.04);
+            background: rgba(255, 255, 255, 0.94);
+            box-shadow: 0 10px 22px rgba(164, 56, 95, 0.24);
+        }
+
+        .home-shortcut:active {
+            transform: translateY(0) scale(0.98);
         }
 
         @keyframes layerRise {
@@ -396,6 +547,7 @@
 </head>
 <body>
     <div class="celebrate-page">
+        <button class="home-shortcut" type="button" onclick="window.location.href='index.html'" aria-label="Return to home">⌂</button>
         <div class="celebrate-card">
             <div class="glitter-rain" aria-hidden="true">
                 <span class="glitter star" style="left: 4%; animation-duration: 8.4s; animation-delay: 0.1s;"></span>
@@ -454,6 +606,19 @@
                         <div class="flame"></div>
                         <div class="candle-smoke"></div>
                     </div>
+                    <div class="candle-message" id="candleMessage">Make a wish below the candle</div>
+                    <div class="burst-rain" aria-hidden="true">
+                        <span class="burst-piece heart b1"></span>
+                        <span class="burst-piece star b2"></span>
+                        <span class="burst-piece spark b3"></span>
+                        <span class="burst-piece heart b4"></span>
+                        <span class="burst-piece star b5"></span>
+                        <span class="burst-piece spark b6"></span>
+                        <span class="burst-piece heart b7"></span>
+                        <span class="burst-piece star b8"></span>
+                        <span class="burst-piece spark b9"></span>
+                    </div>
+                    <div class="final-wish" id="finalWish">Many many happy returns of the day</div>
                 </div>
             </div>
 
@@ -463,10 +628,38 @@
 
     <script>
         window.addEventListener('load', () => {
+            const celebrateCard = document.querySelector('.celebrate-card');
             const cakeStage = document.getElementById('cakeStage');
+            const candleMessage = document.getElementById('candleMessage');
+            const finalWish = document.getElementById('finalWish');
+            const candle = cakeStage ? cakeStage.querySelector('.candle') : null;
             if (cakeStage) {
                 setTimeout(() => cakeStage.classList.add('show'), 120);
             }
+
+            setTimeout(() => {
+                if (celebrateCard) {
+                    celebrateCard.classList.add('show-message');
+                }
+                if (candleMessage) {
+                    candleMessage.textContent = 'Please blow the candle';
+                }
+            }, 5000);
+
+            setTimeout(() => {
+                if (candle) {
+                    candle.classList.add('candle-drop');
+                }
+                if (celebrateCard) {
+                    celebrateCard.classList.add('show-burst');
+                }
+                if (candleMessage) {
+                    candleMessage.textContent = 'The celebration starts now';
+                }
+                if (finalWish) {
+                    finalWish.textContent = 'Many many happy returns of the day';
+                }
+            }, 8000);
         });
     </script>
 </body>

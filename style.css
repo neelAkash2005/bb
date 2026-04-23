@@ -1521,6 +1521,35 @@ body {
     z-index: 100;
 }
 
+.home-shortcut {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    z-index: 100;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #9c2451;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 8px 18px rgba(164, 56, 95, 0.18);
+    backdrop-filter: blur(8px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.home-shortcut:hover {
+    transform: translateY(-2px) scale(1.03);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 22px rgba(164, 56, 95, 0.24);
+}
+
+.home-shortcut:active {
+    transform: translateY(0) scale(0.98);
+}
+
 .music-btn {
     width: 50px;
     height: 50px;
