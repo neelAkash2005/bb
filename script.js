@@ -58,6 +58,7 @@ let primarySourceNode = null;
 let primaryGainNode = null;
 let primaryTrebleNode = null;
 let usingEnhancedPrimaryAudio = false;
+let autoMusicStarted = false;
 
 // DOM Elements
 const mainScreen = document.getElementById('mainScreen');
@@ -201,6 +202,25 @@ async function initializePrimaryAudioProcessing() {
         usingEnhancedPrimaryAudio = false;
         console.log('Primary audio enhancement unavailable:', error);
     }
+}
+
+async function startMainMusicPlayback() {
+    if (!backgroundMusic) {
+        return false;
+    }
+
+    backgroundMusic.volume = PRIMARY_TRACK_VOLUME;
+
+    await initializePrimaryAudioProcessing();
+    if (audioContext && audioContext.state === 'suspended') {
+        await audioContext.resume();
+    }
+
+    await backgroundMusic.play();
+    musicBtn.textContent = '🔊';
+    musicBtn.classList.remove('muted');
+    musicPlaying = true;
+    return true;
 }
 
 // Set canvas sizes
@@ -462,6 +482,7 @@ function showMessage() {
     friendNoBtn.style.top = '0';
     closeCatPopup();
     showScreen(friendScreen);
+    startMainMusicPlayback().catch(() => {});
     playCuteConfetti();
 }
 
@@ -470,6 +491,7 @@ function backToMain() {
     escapeMessage.style.display = 'none';
     closeCatPopup();
     showScreen(mainScreen);
+    startMainMusicPlayback().catch(() => {});
 }
 
 function showBirthday() {
@@ -479,12 +501,14 @@ function showBirthday() {
         birthdayMessageWrapper.scrollTop = 0;
     }
     updateBirthdayScrollHint();
+    startMainMusicPlayback().catch(() => {});
     playConfetti();
 }
 
 function openMemoriesPage() {
     showScreen(memoriesScreen);
     resetMemoryRun();
+    startMainMusicPlayback().catch(() => {});
     if (memoriesBalloons) {
         memoriesBalloons.innerHTML = '';
     }
@@ -517,6 +541,9 @@ function openMemoriesPage() {
 }
 
 function showCelebratePage() {
+    if (backgroundMusic) {
+        backgroundMusic.pause();
+    }
     window.location.href = 'celebrate.html';
 }
 
@@ -749,34 +776,13 @@ function toggleMusic() {
         musicBtn.classList.add('muted');
         musicPlaying = false;
     } else {
-        const startPlayback = async () => {
-            backgroundMusic.volume = PRIMARY_TRACK_VOLUME;
-
-            await initializePrimaryAudioProcessing();
-            if (audioContext && audioContext.state === 'suspended') {
-                await audioContext.resume();
-            }
-
-            if (backgroundMusicSoft) {
-                backgroundMusicSoft.volume = SECONDARY_TRACK_VOLUME;
-                backgroundMusicSoft.currentTime = backgroundMusic.currentTime;
-            }
-
-            await Promise.all([
-                backgroundMusic.play(),
-                backgroundMusicSoft ? backgroundMusicSoft.play() : Promise.resolve()
-            ]);
-
-            musicBtn.textContent = '🔊';
-            musicBtn.classList.remove('muted');
-            musicPlaying = true;
-        };
-
-        startPlayback()
+        startMainMusicPlayback()
             .then(() => {
-                musicBtn.textContent = '🔊';
-                musicBtn.classList.remove('muted');
-                musicPlaying = true;
+                if (backgroundMusicSoft) {
+                    backgroundMusicSoft.volume = SECONDARY_TRACK_VOLUME;
+                    backgroundMusicSoft.currentTime = backgroundMusic.currentTime;
+                    backgroundMusicSoft.play().catch(() => {});
+                }
             })
             .catch((error) => {
                 console.log('Play error:', error);
@@ -818,6 +824,42 @@ window.addEventListener('load', () => {
     }
 
     initializePrimaryAudioProcessing();
+
+    startMainMusicPlayback()
+        .then(() => {
+            autoMusicStarted = true;
+            if (backgroundMusicSoft) {
+                backgroundMusicSoft.volume = SECONDARY_TRACK_VOLUME;
+                backgroundMusicSoft.currentTime = backgroundMusic.currentTime;
+                backgroundMusicSoft.play().catch(() => {});
+            }
+        })
+        .catch(() => {});
+
+    const unlockAutoMusic = () => {
+        if (autoMusicStarted || musicPlaying) {
+            return;
+        }
+
+        startMainMusicPlayback()
+            .then(() => {
+                autoMusicStarted = true;
+                if (backgroundMusicSoft) {
+                    backgroundMusicSoft.volume = SECONDARY_TRACK_VOLUME;
+                    backgroundMusicSoft.currentTime = backgroundMusic.currentTime;
+                    backgroundMusicSoft.play().catch(() => {});
+                }
+            })
+            .catch(() => {});
+
+        window.removeEventListener('pointerdown', unlockAutoMusic);
+        window.removeEventListener('keydown', unlockAutoMusic);
+        window.removeEventListener('touchstart', unlockAutoMusic);
+    };
+
+    window.addEventListener('pointerdown', unlockAutoMusic, { once: true });
+    window.addEventListener('keydown', unlockAutoMusic, { once: true });
+    window.addEventListener('touchstart', unlockAutoMusic, { once: true });
 });
 
 if (birthdayMessageWrapper) {
